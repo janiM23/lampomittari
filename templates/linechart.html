@@ -1,0 +1,67 @@
+﻿<html>
+    <head>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.min.js"></script>
+      <script type="text/javascript" charset="utf-8"></script>    
+      
+      <!-- tuohon load kohtaan piti laittaa toi table, tai muuten ei näy  -->
+      <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart','table']});
+        google.charts.setOnLoadCallback(init);
+
+        function init() {
+          var socket = io();
+          socket.on('my_response', function (data) {
+            var s = JSON.parse(data.result);
+            console.log(s)
+            drawChart(s)
+            <!--drawTable(s)-->
+          })
+        }
+
+        function drawChart(s) {
+
+          var data = new google.visualization.DataTable();
+
+            data.addColumn('string', 'Time')
+            data.addColumn('number', 'X');
+            data.addColumn('number', 'y');
+            // data.addColumn('number', 'z');
+            data.addRows(s);
+  
+          var options = {
+            title: 'Lämpötila-arvot',
+            hAxis: {title: 'Aika'},//, viewwindowMode: 'explicit', viewWindow: {max: 4}},
+            vAxis: {title: 'Celsius'},
+            // curveType: 'function',
+            // legend: { position: 'bottom' }
+          };
+  
+          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+  
+          chart.draw(data, options);
+        }
+
+        function drawTable(s) {
+        var data1 = new google.visualization.DataTable();
+            data1.addColumn('number', 'Time');
+            data1.addColumn('number', 'X');
+            data1.addColumn('number', 'y');
+            data1.addColumn('number', 'z');        
+            data1.addRows(s);
+
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        table.draw(data1, {showRowNumber: true, width: '100%', height: '100%'});
+
+        }
+
+      </script>
+    </head>
+    <body>
+      <div id="curve_chart" style="width: 900px; height: 500px"></div>
+      <div id="table_div" style="width: 900px; height: 500px"></div>
+    </body>
+  </html>
+  
