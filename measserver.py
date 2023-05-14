@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO, emit
 import json
 
+# Flask ja socketio.
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)

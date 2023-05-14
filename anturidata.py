@@ -24,6 +24,7 @@ def mittaus():
 
         thermistor.value
 
+        # Palauttaa nollan jos ei arvoa.
         if thermistor.value == 0.0:
             return(0.0)
         
@@ -40,6 +41,6 @@ def mittaus():
         return(p)
 
 def main():
-    while True:
-        mittaus()
+    mittaus()
+
 main()
